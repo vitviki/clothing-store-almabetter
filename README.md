@@ -1,2 +1,1 @@
-# clothing-store-almabetter
-A Myntra like clothing store app
+A Myntra like Clothing Store App made using React and Javascript
