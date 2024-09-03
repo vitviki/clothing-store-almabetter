@@ -14,7 +14,7 @@ import { Footer, Navbar } from "./components";
 
 export default function App() {
   return (
-    <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+    <div>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
