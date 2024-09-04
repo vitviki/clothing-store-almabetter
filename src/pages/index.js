@@ -7,6 +7,9 @@ import Checkout from "./Checkout";
 import Product from "./Product";
 import Profile from "./Profile";
 import SearchResults from "./SearchResults";
+import SignUp from "./SignUp";
+
+
 
 export {
   Home,
@@ -18,4 +21,5 @@ export {
   Product,
   Profile,
   SearchResults,
+  SignUp,
 };

@@ -4,6 +4,7 @@ import {
   About,
   Cart,
   Login,
+  SignUp,
   Orders,
   Product,
   Profile,
@@ -11,6 +12,7 @@ import {
   Checkout,
 } from "./pages";
 import { Footer, Navbar } from "./components";
+
 
 export default function App() {
   return (
@@ -21,6 +23,7 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signUp" element={<SignUp/>} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/products/:productId" element={<Product />} />

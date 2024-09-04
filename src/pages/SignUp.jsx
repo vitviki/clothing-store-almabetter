@@ -1,48 +1,65 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../components/firebase";
+import { auth ,db } from "../components/firebase";
+import { setDoc,doc } from "firebase/firestore";
 
-const Login = () => {
-
+const SignUp = () => {
+  const [name,setName] =useState("");
   const [email,setEmail] =useState("");
   const [password,setPassword] =useState("");
+
   const navigate = useNavigate();
 
   const handleSignUpNavigation = () => {
-    navigate("/signUp");
+    navigate("/login");
   };
 
-  const handleSubmit= async(e)=>{
-   e.preventDefault();
-   try {
-     await signInWithEmailAndPassword(auth,email,password);
-     console.log("User Logged in Successfully");
-     window.location.href="/home";
-   } catch (error) {
+  const handleSubmit= async (e)=>{
+    e.preventDefault();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password)
+      const user =auth.currentUser;
+      console.log("Users:",user);
+      console.log("User Registered Successfully");
+      if(user){
+        await setDoc(doc(db,"Users",user.uid),{
+          email:user.email,
+          name:name,
+        })
+      }
+    } catch (error) {
       console.log(error.message);
-   }
-
+    }
   }
+
   return (
     <form onSubmit={handleSubmit} className="bg-[#fdefe9] min-h-screen flex items-center">
       <div className="p-8 bg-white h-[500px] w-[400px] mx-auto">
-        <p className="py-8 text-[#424553] text-2xl font-bold">Login</p>
+        <p className="py-6 text-[#424553] text-2xl font-bold">Sign Up</p>
         <input
           className="py-2 p-4 w-full border mb-4"
-          type="email"
-          placeholder="Enter Email"
-          value={email}
-          onChange={(e)=>setEmail(e.target.value)}
+          type="text"
+          placeholder="Enter your Name"
+          value={name}
+          onChange={(e)=>{setName(e.target.value)}}
           required
         />
         <br />
         <input
-          className="py-2 p-4 w-full border"
+          className="py-2 p-4 w-full border mb-4"
+          type="email"
+          placeholder="Enter your Email"
+          value={email}
+          onChange={(e)=>{setEmail(e.target.value)}}
+          required
+        />
+        <input
+          className="py-2 p-4 w-full border mb-4"
           type="password"
-          placeholder="Enter password"
+          placeholder="Enter your Password"
           value={password}
-          onChange={(e)=>setPassword(e.target.value)}
+          onChange={(e)=>{setPassword(e.target.value)}}
           required
         />
         <p className="py-4 text-xs">
@@ -65,15 +82,15 @@ const Login = () => {
           type="submit"
           className="py-2 text-white bg-[#ff3f6c] w-full"
         >
-          CONTINUE
+          SIGN UP
         </button>
         <p className="py-3 w-full text-center max-sm:text-xs">
-          Don't have an account?{" "}
+         Already have an account?{" "}
           <span
             onClick={handleSignUpNavigation}
             className="cursor-pointer font-bold text-[#ff3f6c]"
           >
-            Sign Up
+            Login
           </span>
         </p>
       </div>
@@ -81,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
