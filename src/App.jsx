@@ -9,6 +9,7 @@ import {
   Profile,
   SearchResults,
   Checkout,
+  Category,
 } from "./pages";
 import { Footer, Navbar } from "./components";
 
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/:categoryId/:categoryType" element={<Category />} />
         <Route path="/products/:productId" element={<Product />} />
         <Route path="/profile/:profileId" element={<Profile />} />
         <Route path="/searchResults/:searchTerm" element={<SearchResults />} />

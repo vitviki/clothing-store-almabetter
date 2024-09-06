@@ -12,7 +12,7 @@ const Footer = () => {
               <h4 className="font-bold text-base">{link.title}</h4>
               <ul className="flex flex-col gap-2">
                 {link.sub_menu.map((sub_link) => (
-                  <li key={sub_link._id}>
+                  <li key={sub_link.title}>
                     <Link className="text-sm font-light">{sub_link.title}</Link>
                   </li>
                 ))}
@@ -24,8 +24,8 @@ const Footer = () => {
           <h4 className="font-bold text-base">KEEP IN TOUCH</h4>
           <div className="flex gap-8 items-center">
             {social_links.map((link) => (
-              <Link to="/">
-                <link.icon className="text-2xl" key={link.title} />
+              <Link to="/" key={link.title}>
+                <link.icon className="text-2xl" />
               </Link>
             ))}
           </div>

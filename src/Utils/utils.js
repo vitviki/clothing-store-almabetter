@@ -11,43 +11,28 @@ export const navLinks = [
     dropdown: [
       {
         _id: 1,
-        category: "Topwear",
+        category: "Shirts",
+        value: "shirts",
       },
       {
         _id: 2,
-        category: "Topwear",
+        category: "Trousers",
+        value: "trousers",
       },
       {
         _id: 3,
-        category: "Topwear",
+        category: "Boots",
+        value: "boots",
       },
       {
         _id: 4,
-        category: "Topwear",
+        category: "Innerwear",
+        value: "innerwear",
       },
       {
         _id: 5,
-        category: "Topwear",
-      },
-      {
-        _id: 6,
-        category: "Topwear",
-      },
-      {
-        _id: 7,
-        category: "Topwear",
-      },
-      {
-        _id: 8,
-        category: "Topwear",
-      },
-      {
-        _id: 9,
-        category: "Topwear",
-      },
-      {
-        _id: 10,
-        category: "Topwear",
+        category: "Ethnic",
+        value: "ethnic",
       },
     ],
   },
@@ -58,43 +43,28 @@ export const navLinks = [
     dropdown: [
       {
         _id: 1,
-        category: "Western Wear",
+        category: "Tops",
+        value: "tops",
       },
       {
         _id: 2,
-        category: "Western Wear",
+        category: "Jeans",
+        value: "jeans",
       },
       {
         _id: 3,
-        category: "Western Wear",
+        category: "Sneakers",
+        value: "sneakers",
       },
       {
         _id: 4,
-        category: "Western Wear",
+        category: "Innerwear",
+        value: "innerwear",
       },
       {
         _id: 5,
-        category: "Western Wear",
-      },
-      {
-        _id: 6,
-        category: "Western Wear",
-      },
-      {
-        _id: 7,
-        category: "Western Wear",
-      },
-      {
-        _id: 8,
-        category: "Western Wear",
-      },
-      {
-        _id: 9,
-        category: "Western Wear",
-      },
-      {
-        _id: 10,
-        category: "Western Wear",
+        category: "Ethnic",
+        value: "ethnic",
       },
     ],
   },
@@ -105,90 +75,60 @@ export const navLinks = [
     dropdown: [
       {
         _id: 1,
-        category: "Boys Clothing",
+        category: "Shirts",
+        value: "shirts",
       },
       {
         _id: 2,
-        category: "Boys Clothing",
+        category: "Trousers",
+        value: "trousers",
       },
       {
         _id: 3,
-        category: "Boys Clothing",
+        category: "Shoes",
+        value: "shoes",
       },
       {
         _id: 4,
-        category: "Boys Clothing",
+        category: "Innerwear",
+        value: "innerwear",
       },
       {
         _id: 5,
-        category: "Boys Clothing",
-      },
-      {
-        _id: 6,
-        category: "Boys Clothing",
-      },
-      {
-        _id: 7,
-        category: "Boys Clothing",
-      },
-      {
-        _id: 8,
-        category: "Boys Clothing",
-      },
-      {
-        _id: 9,
-        category: "Boys Clothing",
-      },
-      {
-        _id: 10,
-        category: "Boys Clothing",
+        category: "Ethnic",
+        value: "ethnic",
       },
     ],
   },
   {
     _id: 4,
     title: "HOME & LIVING",
-    value: "home_and_living",
+    value: "home",
     dropdown: [
       {
         _id: 1,
-        category: "Flooring",
+        category: "Bedroom",
+        value: "bedroom",
       },
       {
         _id: 2,
-        category: "Flooring",
+        category: "Curtains",
+        value: "curtains",
       },
       {
         _id: 3,
         category: "Flooring",
+        value: "flooring",
       },
       {
         _id: 4,
-        category: "Flooring",
+        category: "Lamps",
+        value: "lamps",
       },
       {
         _id: 5,
-        category: "Flooring",
-      },
-      {
-        _id: 6,
-        category: "Flooring",
-      },
-      {
-        _id: 7,
-        category: "Flooring",
-      },
-      {
-        _id: 8,
-        category: "Flooring",
-      },
-      {
-        _id: 9,
-        category: "Flooring",
-      },
-      {
-        _id: 10,
-        category: "Flooring",
+        category: "Wallpapers",
+        value: "wallpapers",
       },
     ],
   },
@@ -200,42 +140,27 @@ export const navLinks = [
       {
         _id: 1,
         category: "Makeup",
+        value: "makeup",
       },
       {
         _id: 2,
-        category: "Makeup",
+        category: "Fragrances",
+        value: "fragrances",
       },
       {
         _id: 3,
-        category: "Makeup",
+        category: "Hair Care",
+        value: "hair",
       },
       {
         _id: 4,
-        category: "Makeup",
+        category: "Hygiene",
+        value: "hygiene",
       },
       {
         _id: 5,
-        category: "Makeup",
-      },
-      {
-        _id: 6,
-        category: "Makeup",
-      },
-      {
-        _id: 7,
-        category: "Makeup",
-      },
-      {
-        _id: 8,
-        category: "Makeup",
-      },
-      {
-        _id: 9,
-        category: "Makeup",
-      },
-      {
-        _id: 10,
-        category: "Makeup",
+        category: "Bath",
+        value: "bath",
       },
     ],
   },

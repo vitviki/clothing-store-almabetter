@@ -5,7 +5,10 @@ import { navLinks, navProfileIcons } from "../Utils/utils";
 import { FiSearch } from "react-icons/fi";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { MdOutlineKeyboardArrowRight, MdOutlineKeyboardArrowUp } from "react-icons/md";
+import {
+  MdOutlineKeyboardArrowRight,
+  MdOutlineKeyboardArrowUp,
+} from "react-icons/md";
 import Icons from "./Icons";
 
 const Navbar = () => {
@@ -24,7 +27,7 @@ const Navbar = () => {
 
   return (
     <header>
-      <nav className="w-full px-10 flex justify-between shadow-lg max-w-full ">
+      <nav className="w-full px-10 flex justify-between shadow-lg max-w-full  ">
         <div className="lg:w-[50%] flex lg:gap-10 items-center justify-start">
           <RxHamburgerMenu
             className="xl:hidden text-2xl cursor-pointer"
@@ -58,19 +61,22 @@ const Navbar = () => {
                       {link.title}
                       {openDropdown2 === link._id ? (
                         <MdOutlineKeyboardArrowUp className="text-2xl" />
-                      ):(
-                      <MdOutlineKeyboardArrowRight className="text-2xl" />
+                      ) : (
+                        <MdOutlineKeyboardArrowRight className="text-2xl" />
                       )}
                     </div>
                     {openDropdown2 === link._id && link.dropdown && (
                       <div className=" pl-5 mt-4 flex flex-col gap-5">
                         {link.dropdown.map((category, index) => (
-                          <div key={index} className="text-sm">
+                          <Link
+                            key={index}
+                            className="text-sm"
+                            to={`/${link.value}/${category.value}`}
+                          >
                             {category.category}
-                          </div>
+                          </Link>
                         ))}
                       </div>
-                      
                     )}
                   </li>
                 ))}
@@ -93,14 +99,17 @@ const Navbar = () => {
               >
                 {link.title}
                 {link.dropdown && (
-                  <div className="absolute mt-8 h-[400px] w-[500px] hidden group-hover:block  bg-white shadow-lg p-10">
-                    <div className="grid grid-cols-2 gap-9">
+                  <div className="absolute mt-8 w-[200px] hidden group-hover:block bg-white border-l border-r border-b border-gray-300 shadow-lg px-5 pb-5">
+                    <div className="grid grid-cols-2 gap-4 gap-y-6 mt-5">
                       {link.dropdown.map((category, index) => (
-                        <div key={index}>
-                          <h3 className="font-semibold text-lg">
+                        <Link
+                          key={index}
+                          to={`/${link.value}/${category.value}`}
+                        >
+                          <h3 className="font-semibold text-sm hover:text-gray-500 text-gray-950">
                             {category.category}
                           </h3>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   </div>
