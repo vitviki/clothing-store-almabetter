@@ -5,16 +5,26 @@ import { navLinks, navProfileIcons } from "../Utils/utils";
 import { FiSearch } from "react-icons/fi";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { MdOutlineKeyboardArrowRight, MdOutlineKeyboardArrowUp } from "react-icons/md";
 import Icons from "./Icons";
 
 const Navbar = () => {
   const [sideMenuVisible, setSideMenuVisible] = useState(false);
   const [searchMenuVisible, setSearchMenuVisible] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openDropdown2, setOpenDropdown2] = useState(null);
+
+  const handleDropdownClick = (id) => {
+    setOpenDropdown(openDropdown === id ? null : id); // Toggle dropdown
+  };
+
+  const handleDropdownClick2 = (id) => {
+    setOpenDropdown2(openDropdown2 === id ? null : id); // Toggle dropdown
+  };
 
   return (
     <header>
-      <nav className="w-full px-10 py-6 flex justify-between shadow-lg max-w-full">
+      <nav className="w-full px-10 flex justify-between shadow-lg max-w-full ">
         <div className="lg:w-[50%] flex lg:gap-10 items-center justify-start">
           <RxHamburgerMenu
             className="xl:hidden text-2xl cursor-pointer"
@@ -23,7 +33,7 @@ const Navbar = () => {
 
           {/* MOBILE MENU */}
           <div
-            className={`absolute inset-y-0 left-0 overflow-hidden bg-white transition-all ${
+            className={`absolute inset-y-0 left-0 overflow-scroll h-[820px] bg-white transition-all ${
               sideMenuVisible ? "w-[50%]" : "w-0"
             } shadow-lg flex flex-col`}
           >
@@ -39,10 +49,29 @@ const Navbar = () => {
                 {navLinks.map((link) => (
                   <li
                     key={link._id}
-                    className="nav_links_style flex justify-between w-full items-center"
+                    className="nav_links_style flex flex-col w-full"
                   >
-                    {link.title}
-                    <MdOutlineKeyboardArrowRight className="text-2xl" />
+                    <div
+                      className="flex justify-between items-center w-full cursor-pointer"
+                      onClick={() => handleDropdownClick2(link._id)}
+                    >
+                      {link.title}
+                      {openDropdown2 === link._id ? (
+                        <MdOutlineKeyboardArrowUp className="text-2xl" />
+                      ):(
+                      <MdOutlineKeyboardArrowRight className="text-2xl" />
+                      )}
+                    </div>
+                    {openDropdown2 === link._id && link.dropdown && (
+                      <div className=" pl-5 mt-4 flex flex-col gap-5">
+                        {link.dropdown.map((category, index) => (
+                          <div key={index} className="text-sm">
+                            {category.category}
+                          </div>
+                        ))}
+                      </div>
+                      
+                    )}
                   </li>
                 ))}
               </ul>
@@ -58,15 +87,31 @@ const Navbar = () => {
           </Link>
           <ul className="hidden xl:flex gap-8 items-center">
             {navLinks.map((link) => (
-              <li key={link._id} className="nav_links_style">
+              <li
+                key={link._id}
+                className="nav_links_style cursor-pointer underline-animation relative group py-8"
+              >
                 {link.title}
+                {link.dropdown && (
+                  <div className="absolute mt-8 h-[400px] w-[500px] hidden group-hover:block  bg-white shadow-lg p-10">
+                    <div className="grid grid-cols-2 gap-9">
+                      {link.dropdown.map((category, index) => (
+                        <div key={index}>
+                          <h3 className="font-semibold text-lg">
+                            {category.category}
+                          </h3>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
         </div>
 
         <div className="lg:w-[50%] w-full flex lg:justify-center justify-end  lg:pl-10 2xl:pl-0 gap-10">
-          <div className="hidden lg:flex relative  rounded-md items-center w-[75%] bg-gray-100 gap-2 pl-2">
+          <div className="hidden lg:flex relative rounded-md items-center w-[75%] h-10 mt-4 bg-gray-100 gap-2 pl-2">
             <FiSearch
               fontSize={20}
               className="text-gray-500 inset-y-0 left-10 cursor-pointer"
@@ -82,15 +127,48 @@ const Navbar = () => {
               className="lg:hidden cursor-pointer min-w-[50px] text-2xl"
               onClick={() => setSearchMenuVisible(true)}
             />
-            {navProfileIcons.map((item) => (
-              <Icons
-                key={item._id}
-                icon={
-                  <item.icon className="lg:text-base lg:font-extralight text-xl font-semibold" />
-                }
-                text={item.title}
-              />
-            ))}
+            <ul className="flex gap-8 items-center h-full">
+              {navProfileIcons.map((item) => (
+                <li
+                  key={item._id}
+                  className="h-full pt-4 cursor-pointer relative"
+                  onClick={() => handleDropdownClick(item._id)}
+                >
+                  {item.dropdown && (
+                    <div
+                      className={`absolute w-[250px] mt-[60px] -right-24 bg-white shadow-lg p-5 ${
+                        openDropdown === item._id ? "block" : "hidden"
+                      }`}
+                    >
+                      <ul className="flex flex-col gap-3">
+                        <p className="text-sm">Welcome</p>
+                        <p className="text-sm">
+                          To access account and manage orders
+                        </p>
+                        <button className="border p-2 text-[14px] font-bold text-[#ff7797]">
+                          LOGIN/SIGNUP
+                        </button>
+                        <span className="border opacity-80 mt-3"></span>
+                        {item.dropdown.map((option, index) => (
+                          <li
+                            key={index}
+                            className="cursor-pointer p-2 rounded-md"
+                          >
+                            {option.category}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  <Icons
+                    icon={
+                      <item.icon className="lg:text-base lg:font-extralight text-xl font-semibold cursor-pointer" />
+                    }
+                    text={item.title}
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

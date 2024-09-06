@@ -26,3 +26,25 @@
         scrollbar-width: none;
       }
 }
+
+.underline-animation {
+  position: relative;;
+}
+
+.underline-animation::after {
+  content: '';
+  position: absolute;
+  margin-bottom: -8px;
+  bottom: 8px;
+  right: 0px;
+  height: 4px;
+  background-color: #000000;
+  display: none;
+}
+
+.underline-animation:hover::after,
+.underline-animation:focus::after {
+  display: block;
+  width: 100%;
+  
+}
