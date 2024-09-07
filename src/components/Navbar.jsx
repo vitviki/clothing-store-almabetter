@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/index";
 import { navLinks, navProfileIcons } from "../Utils/utils";
@@ -10,6 +10,8 @@ import {
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
 import Icons from "./Icons";
+import { auth ,db } from "./firebase";
+import { doc , getDoc, setDoc } from "firebase/firestore"
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -18,7 +20,26 @@ const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openDropdown2, setOpenDropdown2] = useState(null);
+  const [userDetails,setUserDetails]=useState(null)
 
+  const fetchUserData = async () => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {  // Check if user exists
+        // console.log(user);
+        const docRef = doc(db, "Users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUserDetails(docSnap.data());
+          // console.log(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+      } else {
+        // console.log("User is not logged in");
+        setUserDetails(null); 
+      }
+    });
+  };
   const handleDropdownClick = (id) => {
     setOpenDropdown(openDropdown === id ? null : id); // Toggle dropdown
   };
@@ -27,6 +48,20 @@ const Navbar = () => {
     setOpenDropdown2(openDropdown2 === id ? null : id); // Toggle dropdown
   };
 
+  const handleLoginButton =()=>{
+    navigate("/login")
+  }
+
+  async  function handleLogout(){
+    try {
+      await auth.signOut();                                                           
+      localStorage.removeItem("userId");
+      navigate("/login");
+      setUserDetails(null)
+    } catch (error) {
+      
+    }
+  }
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(searchValue.length);
@@ -37,6 +72,10 @@ const Navbar = () => {
       navigate(`/search/${searchValue}`);
     }
   };
+
+  useEffect(()=>{
+    fetchUserData();
+  },[]);
 
   return (
     <header>
@@ -169,13 +208,13 @@ const Navbar = () => {
                       }`}
                     >
                       <ul className="flex flex-col gap-3">
-                        <p className="text-sm">Welcome</p>
+                        <p className="text-sm">Welcome {userDetails ? (<span className="font-bold">{userDetails.name}</span>):(<></>)}</p>
                         <p className="text-sm">
                           To access account and manage orders
                         </p>
-                        <button className="border p-2 text-[14px] font-bold text-[#ff7797]">
+                        {userDetails?(<button onClick={handleLogout} className="border p-2 text-[14px] font-bold text-[#ff7797]">LOGOUT</button>):(<button onClick={handleLoginButton} className="border p-2 text-[14px] font-bold text-[#ff7797]">
                           LOGIN/SIGNUP
-                        </button>
+                        </button>)}
                         <span className="border opacity-80 mt-3"></span>
                         {item.dropdown.map((option, index) => (
                           <li
