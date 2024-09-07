@@ -1,7 +1,18 @@
-import React from "react";
+import { useParams } from "react-router-dom";
+import { Collections } from "../components";
 
 const SearchResults = () => {
-  return <div>SearchResults</div>;
+  const { searchTerm } = useParams();
+
+  return (
+    <>
+      <Collections
+        searchString={searchTerm}
+        titleText1="Results:"
+        titleText2={searchTerm}
+      />
+    </>
+  );
 };
 
 export default SearchResults;

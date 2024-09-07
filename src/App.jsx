@@ -27,7 +27,7 @@ export default function App() {
         <Route path="/:categoryId/:categoryType" element={<Category />} />
         <Route path="/products/:productId" element={<Product />} />
         <Route path="/profile/:profileId" element={<Profile />} />
-        <Route path="/searchResults/:searchTerm" element={<SearchResults />} />
+        <Route path="/search/:searchTerm" element={<SearchResults />} />
       </Routes>
       <Footer />
     </div>

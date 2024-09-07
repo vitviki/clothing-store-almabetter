@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/index";
 import { navLinks, navProfileIcons } from "../Utils/utils";
 import { FiSearch } from "react-icons/fi";
@@ -12,8 +12,10 @@ import {
 import Icons from "./Icons";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [sideMenuVisible, setSideMenuVisible] = useState(false);
   const [searchMenuVisible, setSearchMenuVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openDropdown2, setOpenDropdown2] = useState(null);
 
@@ -23,6 +25,17 @@ const Navbar = () => {
 
   const handleDropdownClick2 = (id) => {
     setOpenDropdown2(openDropdown2 === id ? null : id); // Toggle dropdown
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log(searchValue.length);
+    if (searchValue.length >= 3) {
+      console.log(searchValue);
+      setSearchValue("");
+      setSearchMenuVisible(false);
+      navigate(`/search/${searchValue}`);
+    }
   };
 
   return (
@@ -120,7 +133,11 @@ const Navbar = () => {
         </div>
 
         <div className="lg:w-[50%] w-full flex lg:justify-center justify-end  lg:pl-10 2xl:pl-0 gap-10">
-          <div className="hidden lg:flex relative rounded-md items-center w-[75%] h-10 mt-4 bg-gray-100 gap-2 pl-2">
+          <form
+            action=""
+            className="hidden lg:flex relative rounded-md items-center w-[75%] h-10 mt-4 bg-gray-100 gap-2 pl-2"
+            onSubmit={handleSearch}
+          >
             <FiSearch
               fontSize={20}
               className="text-gray-500 inset-y-0 left-10 cursor-pointer"
@@ -129,8 +146,10 @@ const Navbar = () => {
               type="text"
               placeholder="Search for brands & products"
               className="w-full bg-transparent border-none focus:border-none active:border-none active:outline-none outline-none pl-5 font-montserrat 2xl:text-sm text-xs font-medium"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
-          </div>
+          </form>
           <div className="flex gap-8 justify-end items-center">
             <FiSearch
               className="lg:hidden cursor-pointer min-w-[50px] text-2xl"
@@ -183,21 +202,26 @@ const Navbar = () => {
 
         {/* SEARCH MENU */}
         <div
-          className={`absolute inset-y-0 right-0 overflow-hidden bg-white transition-all ${
-            searchMenuVisible ? "w-full" : "w-0"
-          } mt-5`}
+          className={`absolute inset-y-0 right-0 top-[-15px] overflow-hidden bg-white transition-all ${
+            searchMenuVisible ? "w-full h-full" : "w-0 h-0"
+          } mt-5 pt-5`}
         >
-          <div className="relative w-full border-b-2 pb-5 px-3 flex items-center">
+          <div className="w-full border-b-2 pb-5 px-3 flex items-center">
             <GoArrowRight
-              className="text-3xl absolute text-gray-600 cursor-pointer"
+              className="text-3xl text-gray-600 cursor-pointer"
               onClick={() => setSearchMenuVisible(false)}
             />
             <input
               type="text"
               placeholder="Search for brands & products"
               className="w-full bg-transparent border-none focus:border-none active:border-none active:outline-none outline-none pl-10 font-montserrat text-base font-medium"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
-            <FiSearch className="text-2xl" />
+            <FiSearch
+              className="text-2xl cursor-pointer"
+              onClick={handleSearch}
+            />
           </div>
         </div>
       </nav>
