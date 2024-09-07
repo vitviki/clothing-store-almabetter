@@ -54,10 +54,10 @@ const Collections = ({ searchString, titleText1, titleText2 }) => {
   }, [sortType]);
 
   useEffect(() => {
-    const prices = getAllProductsPrices();
-    setMinPriceValue(Math.min(...prices));
-    setMaxPriceValue(Math.max(...prices));
-    setPriceValue(Math.max(...prices));
+    // const prices = getAllProductsPrices();
+    // setMinPriceValue(Math.min(...prices));
+    // setMaxPriceValue(Math.max(...prices));
+    // setPriceValue(Math.max(...prices));
   }, [products]);
 
   useEffect(() => {

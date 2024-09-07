@@ -7,7 +7,7 @@ export const rapidAPI = createApi({
     prepareHeaders: (headers) => {
       headers.set(
         "x-rapidapi-key",
-        "6bee878ed4msh4a34558da386989p186df9jsn9c58b55f7d95"
+        "2c141ef8b4msha341a9c7ad828b4p199b68jsn400254ca1736"
       );
       return headers;
     },
@@ -21,7 +21,14 @@ export const rapidAPI = createApi({
       query: (queryString) =>
         `/search?query=${queryString}&page=1&country=IN&sort_by=RELEVANCE&product_condition=ALL&is_prime=false`,
     }),
+    getProductDetails: builder.query({
+      query: (asin) => `/product-details?asin=${asin}&country=IN`,
+    }),
   }),
 });
 
-export const { useGetBestSellersQuery, useGetDataQuery } = rapidAPI;
+export const {
+  useGetBestSellersQuery,
+  useGetDataQuery,
+  useGetProductDetailsQuery,
+} = rapidAPI;
