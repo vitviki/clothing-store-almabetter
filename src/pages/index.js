@@ -8,6 +8,9 @@ import Product from "./Product";
 import Profile from "./Profile";
 import SearchResults from "./SearchResults";
 import Category from "./Category";
+import SignUp from "./SignUp";
+
+
 
 export {
   Home,
@@ -20,4 +23,5 @@ export {
   Profile,
   SearchResults,
   Category,
+  SignUp,
 };
