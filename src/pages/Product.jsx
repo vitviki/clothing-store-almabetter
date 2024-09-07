@@ -78,7 +78,7 @@ const Product = () => {
       <div className="flex gap-12 flex-col sm:flex-row">
         {/* Product Images */}
         <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 xl:border-r-2 ">
-          <div className="flex sm:flex-col gap-2 overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
+          <div className="flex sm:flex-col gap-2 hide-scrollbar overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
             {productData?.data?.product_photos.slice(0, 4).map((image, idx) => (
               <img
                 src={image}
