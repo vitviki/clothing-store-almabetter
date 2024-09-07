@@ -21,7 +21,14 @@ export const rapidAPI = createApi({
       query: (queryString) =>
         `/search?query=${queryString}&page=1&country=IN&sort_by=RELEVANCE&product_condition=ALL&is_prime=false`,
     }),
+    getProductDetails: builder.query({
+      query: (asin) => `/product-details?asin=${asin}&country=IN`,
+    }),
   }),
 });
 
-export const { useGetBestSellersQuery, useGetDataQuery } = rapidAPI;
+export const {
+  useGetBestSellersQuery,
+  useGetDataQuery,
+  useGetProductDetailsQuery,
+} = rapidAPI;
