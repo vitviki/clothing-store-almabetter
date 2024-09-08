@@ -22,7 +22,7 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openDropdown2, setOpenDropdown2] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
-
+// function that gets data from firestore 
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -53,15 +53,15 @@ const Navbar = () => {
       handleDropdownClick(item._id); // Handle dropdown logic
     }
   };
-
+// function to handle dropdown
   const handleDropdownClick2 = (id) => {
     setOpenDropdown2(openDropdown2 === id ? null : id); // Toggle dropdown
   };
-
+// function to handle login
   const handleLoginButton = () => {
     navigate("/login");
   };
-
+// function to remove the userID and to get logout and navigates to login 
   async function handleLogout() {
     try {
       await auth.signOut();
@@ -83,6 +83,7 @@ const Navbar = () => {
       });
     }
   }
+  // Search functionality
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(searchValue.length);
@@ -93,7 +94,7 @@ const Navbar = () => {
       navigate(`/search/${searchValue}`);
     }
   };
-
+// hook which is used to fetch data everytime
   useEffect(() => {
     fetchUserData();
   }, []);
