@@ -9,17 +9,19 @@ const Login = () => {
   const [email,setEmail] =useState("");
   const [password,setPassword] =useState("");
   const navigate = useNavigate();
-
+//function to navigate to signup
   const handleSignUpNavigation = () => {
     navigate("/signUp");
   };
 
+  // Function to submit the form 
   const handleSubmit= async(e)=>{
    e.preventDefault();
    try {
      await signInWithEmailAndPassword(auth,email,password);
      console.log("User Logged in Successfully");
      navigate("/")
+     //toast notification for successfull login
      toast.success("Welcome Back!", {
       autoClose: 3000,
       hideProgressBar: true,
