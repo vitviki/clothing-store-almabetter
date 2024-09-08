@@ -8,6 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
+  // Function to Fetch cart items from firestore 
   useEffect(() => {
     const fetchCartItems = async () => {
       if (auth.currentUser) {
@@ -24,7 +25,7 @@ const Cart = () => {
 
     fetchCartItems();
   }, []);
-
+//function to remove items from cart and in firestore too
   const handleRemove = async (productId) => {
     if (auth.currentUser) {
       const userId = auth.currentUser.uid;
@@ -47,6 +48,7 @@ const Cart = () => {
       }
     }
   };
+  //function to handle navigation to wishlist 
   const handleNavigate = () => {
     navigate("/wishlist");
   };
