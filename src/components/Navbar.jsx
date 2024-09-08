@@ -11,7 +11,8 @@ import {
 } from "react-icons/md";
 import Icons from "./Icons";
 import { auth ,db } from "./firebase";
-import { doc , getDoc, setDoc } from "firebase/firestore"
+import { doc , getDoc } from "firebase/firestore"
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -42,6 +43,15 @@ const Navbar = () => {
   };
   const handleDropdownClick = (id) => {
     setOpenDropdown(openDropdown === id ? null : id); // Toggle dropdown
+    
+  };
+  
+  const handleItemClick = (item) => {
+    if (item.navigate) {
+      navigate(item.navigate); // Navigate to the specified route
+    } else if (item.dropdown) {
+      handleDropdownClick(item._id); // Handle dropdown logic
+    }
   };
 
   const handleDropdownClick2 = (id) => {
@@ -58,8 +68,19 @@ const Navbar = () => {
       localStorage.removeItem("userId");
       navigate("/login");
       setUserDetails(null)
+      toast.success("Logout Successfull", {
+        autoClose: 3000,
+        hideProgressBar: true,
+        progress: undefined,
+        className: "bg-green-600 text-white font-semibold", 
+      });
     } catch (error) {
-      
+      toast.error(error.message, {
+        autoClose: 3000,
+        hideProgressBar: true,
+        progress: undefined,
+        className: "bg-red-600 text-white font-semibold", 
+      });
     }
   }
   const handleSearch = (e) => {
@@ -199,7 +220,7 @@ const Navbar = () => {
                 <li
                   key={item._id}
                   className="h-full pt-4 cursor-pointer relative z-10"
-                  onClick={() => handleDropdownClick(item._id)}
+                  onClick={() => handleItemClick(item)}
                 >
                   {item.dropdown && (
                     <div

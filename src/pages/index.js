@@ -9,6 +9,7 @@ import Profile from "./Profile";
 import SearchResults from "./SearchResults";
 import Category from "./Category";
 import SignUp from "./SignUp";
+import Wishlist from "./Wishlist";
 
 
 export {
@@ -23,4 +24,5 @@ export {
   SearchResults,
   Category,
   SignUp,
+  Wishlist,
 };

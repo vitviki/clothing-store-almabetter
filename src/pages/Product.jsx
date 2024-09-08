@@ -8,13 +8,16 @@ import { FaStar } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
 import { ProductCard, Title } from "../components";
+import { auth, db } from "../components/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
-const RelatedProducts = ({ category, name }) => {
+// Component to display related products
+const RelatedProducts = ({ name }) => {
   const {
     data: relatedProductsData,
     isFetching,
-    error,
-  } = useGetDataQuery(`${name}`);
+  } = useGetDataQuery(name);
 
   if (isFetching) {
     return <div className="text-3xl mt-10 text-center">Loading...</div>;
@@ -26,7 +29,7 @@ const RelatedProducts = ({ category, name }) => {
         <Title text1={"RELATED"} text2={"PRODUCTS"} size={"text-3xl"} />
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-6 ">
-        {relatedProductsData?.data.products.slice(0, 4).map((item, idx) => (
+        {relatedProductsData?.data.products.slice(0, 4).map((item) => (
           <ProductCard
             key={item.asin}
             asin={item.asin}
@@ -38,9 +41,7 @@ const RelatedProducts = ({ category, name }) => {
         ))}
       </div>
     </div>
-  ) : (
-    <></>
-  );
+  ) : null;
 };
 
 const Product = () => {
@@ -49,25 +50,83 @@ const Product = () => {
   const [stars, setStars] = useState(0);
   const [size, setSize] = useState("");
 
-  // Get product details
+  // Fetch product details
   const {
     data: productData,
     isFetching,
-    error,
   } = useGetProductDetailsQuery(productId);
 
-  // Get related products
-
-  const calculateDiscountPercentage = (amount1, amount2) => {
-    amount1 = Number(amount1.replace(/[!,@#$%^&₹*]/g, ""));
-    amount2 = Number(amount2.replace(/[!,@#$%^&₹*]/g, ""));
+  // Function to calculate discount percentage
+  const calculateDiscountPercentage = (currentPrice, originalPrice) => {
+    const amount1 = Number(currentPrice.replace(/[!,@#$%^&₹*]/g, ""));
+    const amount2 = Number(originalPrice.replace(/[!,@#$%^&₹*]/g, ""));
     return Math.floor(((amount2 - amount1) / ((amount1 + amount2) / 2)) * 100);
   };
 
   useEffect(() => {
-    setMainImage(productData?.data.product_photos[0]);
-    setStars(Math.ceil(Number(productData?.data.product_star_rating)));
-  }, [productData, isFetching]);
+    if (productData?.data) {
+      setMainImage(productData.data.product_photos[0]);
+      setStars(Math.ceil(Number(productData.data.product_star_rating)));
+    }
+  }, [productData]);
+
+  // Function to add product to cart
+  const addToBag = async () => {
+    if (!size) {
+      toast.error("Please select a size before adding to the cart.");
+      return;
+    }
+
+    if (auth.currentUser) {
+      const userId = auth.currentUser.uid;
+      const cartRef = doc(db, "Users", userId, "cart", productData.data.asin);
+
+      try {
+        await setDoc(cartRef, {
+          ...productData.data,
+          selectedSize: size,
+        });
+        toast.success("Added To Bag", {
+          autoClose: 3000,
+          hideProgressBar: true,
+          className: "bg-green-600 text-white font-semibold",
+        });
+      } catch (error) {
+        toast.error(error.message, {
+          autoClose: 3000,
+          hideProgressBar: true,
+          className: "bg-red-600 text-white font-semibold",
+        });
+      }
+    } else {
+      toast.error("You need to be logged in to add items to the cart.");
+    }
+  };
+
+  // Function to add product to wishlist
+  const addToWishlist = async () => {
+    if (auth.currentUser) {
+      const userId = auth.currentUser.uid;
+      const wishlistRef = doc(db, "Users", userId, "wishlist", productData.data.asin);
+
+      try {
+        await setDoc(wishlistRef, productData.data);
+        toast.success("Added To Wishlist", {
+          autoClose: 3000,
+          hideProgressBar: true,
+          className: "bg-green-600 text-white font-semibold",
+        });
+      } catch (error) {
+        toast.error(error.message, {
+          autoClose: 3000,
+          hideProgressBar: true,
+          className: "bg-red-600 text-white font-semibold",
+        });
+      }
+    } else {
+      toast.error("You need to be logged in to add items to the wishlist.");
+    }
+  };
 
   if (isFetching) {
     return <div className="text-3xl mt-10 text-center">Loading...</div>;
@@ -80,7 +139,7 @@ const Product = () => {
         {/* Product Images */}
         <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 xl:border-r-2 ">
           <div className="flex sm:flex-col gap-2 hide-scrollbar overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
-            {productData?.data?.product_photos.slice(0, 4).map((image, idx) => (
+            {productData?.data.product_photos.slice(0, 4).map((image, idx) => (
               <img
                 src={image}
                 key={idx}
@@ -126,7 +185,7 @@ const Product = () => {
             <span className="text-xl ml-1 text-orange-600">
               (
               {calculateDiscountPercentage(
-                productData?.data?.product_price,
+                productData?.data.product_price,
                 productData?.data.product_original_price
               )}
               % OFF){" "}
@@ -153,11 +212,17 @@ const Product = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <button className="bg-pink-600 text-white px-8 py-3 text-sm font-semibold active:bg-gray-700 flex items-center gap-2 rounded-md">
+            <button
+              onClick={addToBag}
+              className="bg-pink-600 text-white px-8 py-3 text-sm font-semibold active:bg-gray-700 flex items-center gap-2 rounded-md"
+            >
               <FaCartPlus size={20} className="text-white" />
               ADD TO BAG
             </button>
-            <button className="flex items-center gap-2 rounded-md px-8 py-3 text-sm font-semibold bg-white text-black border">
+            <button
+              onClick={addToWishlist}
+              className="flex items-center gap-2 rounded-md px-8 hover:border-black py-3 text-sm font-semibold bg-white text-black border"
+            >
               <CiHeart size={20} className="text-black" />
               WISHLIST
             </button>

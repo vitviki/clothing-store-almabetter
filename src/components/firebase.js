@@ -33,17 +33,3 @@ onAuthStateChanged(auth, (user) => {
 
 export default app;
 
-
-
-// LOGOUT SECTION
-// Comment Needs to be removed and to be used in profile to logout
-
-// async  function handlelogout(){
-//   try {
-//     await auth.signOut();                                                           
-//     localStorage.removeItem("userId");
-//     window.location.href="/login";
-//   } catch (error) {
-    
-//   }
-// }

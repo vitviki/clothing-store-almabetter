@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../components/firebase";
+import { toast } from "react-toastify";
 
 const Login = () => {
 
@@ -18,9 +19,20 @@ const Login = () => {
    try {
      await signInWithEmailAndPassword(auth,email,password);
      console.log("User Logged in Successfully");
-     window.location.href="/";
+     navigate("/")
+     toast.success("Welcome Back!", {
+      autoClose: 3000,
+      hideProgressBar: true,
+      progress: undefined,
+      className: "bg-green-600 text-white font-semibold", 
+    });
    } catch (error) {
-      console.log(error.message);
+      toast.error(error.message, {
+        autoClose: 3000,
+        hideProgressBar: true,
+        progress: undefined,
+        className: "bg-red-500 text-white font-semibold", 
+      });
    }
 
   }

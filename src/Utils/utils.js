@@ -199,11 +199,13 @@ export const navProfileIcons = [
     _id: 2,
     icon: FaRegHeart,
     title: "Wishlist",
+    navigate:"/wishlist"
   },
   {
     _id: 3,
     icon: IoBagOutline,
     title: "Bag",
+    navigate:"/cart"
   },
 ];
 

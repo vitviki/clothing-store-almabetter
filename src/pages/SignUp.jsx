@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth ,db } from "../components/firebase";
 import { setDoc,doc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [name,setName] =useState("");
@@ -20,8 +21,12 @@ const SignUp = () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password)
       const user =auth.currentUser;
-      console.log("Users:",user);
-      console.log("User Registered Successfully");
+      toast.success("Signup Successfull", {
+        autoClose: 3000,
+        hideProgressBar: true,
+        progress: undefined,
+        className: "bg-green-600 text-white font-semibold", 
+      });
       if(user){
         await setDoc(doc(db,"Users",user.uid),{
           email:user.email,
@@ -29,7 +34,12 @@ const SignUp = () => {
         })
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message, {
+        autoClose: 3000,
+        hideProgressBar: true,
+        progress: undefined,
+        className: "bg-red-600 text-white font-semibold", 
+      });
     }
   }
 
