@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { assets, banner_ads } from "../assets";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Title, ProductCard } from "../components";
-
+//Swiper library to make the carousel moving 
 import "swiper/css";
 import "swiper/css/pagination";
 import { useGetBestSellersQuery } from "../redux/services/rapidAPICore";
