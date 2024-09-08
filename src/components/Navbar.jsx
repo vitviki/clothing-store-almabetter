@@ -10,8 +10,8 @@ import {
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
 import Icons from "./Icons";
-import { auth ,db } from "./firebase";
-import { doc , getDoc } from "firebase/firestore"
+import { auth, db } from "./firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
@@ -21,11 +21,12 @@ const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openDropdown2, setOpenDropdown2] = useState(null);
-  const [userDetails,setUserDetails]=useState(null)
+  const [userDetails, setUserDetails] = useState(null);
 
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {
-      if (user) {  // Check if user exists
+      if (user) {
+        // Check if user exists
         // console.log(user);
         const docRef = doc(db, "Users", user.uid);
         const docSnap = await getDoc(docRef);
@@ -37,15 +38,14 @@ const Navbar = () => {
         }
       } else {
         // console.log("User is not logged in");
-        setUserDetails(null); 
+        setUserDetails(null);
       }
     });
   };
   const handleDropdownClick = (id) => {
     setOpenDropdown(openDropdown === id ? null : id); // Toggle dropdown
-    
   };
-  
+
   const handleItemClick = (item) => {
     if (item.navigate) {
       navigate(item.navigate); // Navigate to the specified route
@@ -58,28 +58,28 @@ const Navbar = () => {
     setOpenDropdown2(openDropdown2 === id ? null : id); // Toggle dropdown
   };
 
-  const handleLoginButton =()=>{
-    navigate("/login")
-  }
+  const handleLoginButton = () => {
+    navigate("/login");
+  };
 
-  async  function handleLogout(){
+  async function handleLogout() {
     try {
-      await auth.signOut();                                                           
+      await auth.signOut();
       localStorage.removeItem("userId");
       navigate("/login");
-      setUserDetails(null)
+      setUserDetails(null);
       toast.success("Logout Successfull", {
         autoClose: 3000,
         hideProgressBar: true,
         progress: undefined,
-        className: "bg-green-600 text-white font-semibold", 
+        className: "bg-green-600 text-white font-semibold",
       });
     } catch (error) {
       toast.error(error.message, {
         autoClose: 3000,
         hideProgressBar: true,
         progress: undefined,
-        className: "bg-red-600 text-white font-semibold", 
+        className: "bg-red-600 text-white font-semibold",
       });
     }
   }
@@ -94,9 +94,9 @@ const Navbar = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchUserData();
-  },[]);
+  }, []);
 
   return (
     <header>
@@ -229,13 +229,34 @@ const Navbar = () => {
                       }`}
                     >
                       <ul className="flex flex-col gap-3">
-                        <p className="text-sm">Welcome {userDetails ? (<span className="font-bold">{userDetails.name}</span>):(<></>)}</p>
+                        <p className="text-sm">
+                          Welcome{" "}
+                          {userDetails ? (
+                            <span className="font-bold">
+                              {userDetails.name}
+                            </span>
+                          ) : (
+                            <></>
+                          )}
+                        </p>
                         <p className="text-sm">
                           To access account and manage orders
                         </p>
-                        {userDetails?(<button onClick={handleLogout} className="border p-2 text-[14px] font-bold text-[#ff7797]">LOGOUT</button>):(<button onClick={handleLoginButton} className="border p-2 text-[14px] font-bold text-[#ff7797]">
-                          LOGIN/SIGNUP
-                        </button>)}
+                        {userDetails ? (
+                          <button
+                            onClick={handleLogout}
+                            className="border p-2 text-[14px] font-bold text-[#ff7797]"
+                          >
+                            LOGOUT
+                          </button>
+                        ) : (
+                          <button
+                            onClick={handleLoginButton}
+                            className="border p-2 text-[14px] font-bold text-[#ff7797]"
+                          >
+                            LOGIN/SIGNUP
+                          </button>
+                        )}
                         <span className="border opacity-80 mt-3"></span>
                         {item.dropdown.map((option, index) => (
                           <li
@@ -264,7 +285,7 @@ const Navbar = () => {
         <div
           className={`absolute inset-y-0 right-0 top-[-15px] overflow-hidden bg-white transition-all ${
             searchMenuVisible ? "w-full h-full" : "w-0 h-0"
-          } mt-5 pt-5`}
+          } mt-5 pt-5 z-10`}
         >
           <div className="w-full border-b-2 pb-5 px-3 flex items-center">
             <GoArrowRight

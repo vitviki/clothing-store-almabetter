@@ -70,7 +70,7 @@ const Collections = ({ searchString, titleText1, titleText2 }) => {
   return (
     <div className="flex flex-col lg:flex-row gap-1 sm:gap-10 py-10 border-t px-4 md:px-[5vw] lg:px-[7vw]">
       {/* FILTER OPTIONS */}
-      <div className="min-w-40 xl:w-60 lg:w-50 w-40">
+      {/* <div className="min-w-40 xl:w-60 lg:w-50 w-40">
         <h3
           className="my-2 text-xl flex items-center cursor-pointer gap-2"
           onClick={() => setShowFilter(!showFilter)}
@@ -81,10 +81,10 @@ const Collections = ({ searchString, titleText1, titleText2 }) => {
           ) : (
             <IoMdArrowDropdown className={`lg:hidden`} />
           )}
-        </h3>
+        </h3> */}
 
-        {/* Price Filter */}
-        <div
+      {/* Price Filter */}
+      {/* <div
           className={`border border-gray-300 px-5 py-3 mt-6 rounded-md lg:flex flex-col gap-2 ${
             showFilter ? "" : "hidden"
           }`}
@@ -102,7 +102,7 @@ const Collections = ({ searchString, titleText1, titleText2 }) => {
             step={5}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* PRODUCTS */}
       <div className="flex-1">

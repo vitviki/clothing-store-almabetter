@@ -7,7 +7,7 @@ export const rapidAPI = createApi({
     prepareHeaders: (headers) => {
       headers.set(
         "x-rapidapi-key",
-        "f9e9202ec7msh6871c11f2229f9dp1481f2jsnd3b8872e05f3"
+        "630ccc413dmsh41a1b55c93cbbbdp19b0dfjsn6df71bab7531"
       );
       return headers;
     },

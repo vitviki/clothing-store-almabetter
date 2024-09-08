@@ -14,10 +14,7 @@ import { toast } from "react-toastify";
 
 // Component to display related products
 const RelatedProducts = ({ name }) => {
-  const {
-    data: relatedProductsData,
-    isFetching,
-  } = useGetDataQuery(name);
+  const { data: relatedProductsData, isFetching } = useGetDataQuery(name);
 
   if (isFetching) {
     return <div className="text-3xl mt-10 text-center">Loading...</div>;
@@ -28,15 +25,19 @@ const RelatedProducts = ({ name }) => {
       <div className="text-center text-3xl py-2">
         <Title text1={"RELATED"} text2={"PRODUCTS"} size={"text-3xl"} />
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-6 ">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-6 ">
         {relatedProductsData?.data.products.slice(0, 4).map((item) => (
           <ProductCard
             key={item.asin}
             asin={item.asin}
             title={item.product_title}
             price={item.product_price}
-            original_price={item.original_price}
+            original_price={
+              item.original_price !== null ? item.originalPrice : ""
+            }
             image={item.product_photo}
+            rating={Math.ceil(Number(item.product_star_rating))}
+            rating_num={item.product_num_ratings}
           />
         ))}
       </div>
@@ -51,10 +52,8 @@ const Product = () => {
   const [size, setSize] = useState("");
 
   // Fetch product details
-  const {
-    data: productData,
-    isFetching,
-  } = useGetProductDetailsQuery(productId);
+  const { data: productData, isFetching } =
+    useGetProductDetailsQuery(productId);
 
   // Function to calculate discount percentage
   const calculateDiscountPercentage = (currentPrice, originalPrice) => {
@@ -107,7 +106,13 @@ const Product = () => {
   const addToWishlist = async () => {
     if (auth.currentUser) {
       const userId = auth.currentUser.uid;
-      const wishlistRef = doc(db, "Users", userId, "wishlist", productData.data.asin);
+      const wishlistRef = doc(
+        db,
+        "Users",
+        userId,
+        "wishlist",
+        productData.data.asin
+      );
 
       try {
         await setDoc(wishlistRef, productData.data);
@@ -127,6 +132,8 @@ const Product = () => {
       toast.error("You need to be logged in to add items to the wishlist.");
     }
   };
+
+  console.log(productData);
 
   if (isFetching) {
     return <div className="text-3xl mt-10 text-center">Loading...</div>;
@@ -176,18 +183,25 @@ const Product = () => {
           </div>
           <p className="mt-5 text-3xl font-medium mb-2">
             ₹{productData?.data.product_price}{" "}
-            <span className="font-light text-xl ml-1">
-              MRP{" "}
-              <span className="line-through">
-                {productData?.data.product_original_price}
+            {productData?.data.product_original_price !== null ? (
+              <span className="font-light text-xl ml-1">
+                MRP{" "}
+                <span className="line-through">
+                  {productData?.data.product_original_price}
+                </span>
               </span>
-            </span>{" "}
+            ) : (
+              <></>
+            )}
             <span className="text-xl ml-1 text-orange-600">
               (
-              {calculateDiscountPercentage(
-                productData?.data.product_price,
-                productData?.data.product_original_price
-              )}
+              {productData?.data?.product_original_price !== null &&
+              productData?.data?.product_price !== null
+                ? calculateDiscountPercentage(
+                    productData?.data.product_price,
+                    productData?.data.product_original_price
+                  )
+                : ""}
               % OFF){" "}
             </span>
           </p>
@@ -198,17 +212,21 @@ const Product = () => {
           <div className="flex flex-col gap-4 my-8">
             <p className="text-gray-600">Select Size</p>
             <div className="flex gap-5">
-              {productData?.data.product_variations.size.map((item) => (
-                <button
-                  key={item.asin}
-                  className={`border py-2 px-3  rounded-full bg-gray-100 text-sm ${
-                    item === size ? "border-orange-500 text-orange-500" : ""
-                  } flex items-center justify-center`}
-                  onClick={() => setSize(item)}
-                >
-                  {item.value}
-                </button>
-              ))}
+              {productData?.data.product_variations.length !== 0 ? (
+                productData?.data.product_variations.size.map((item) => (
+                  <button
+                    key={item.asin}
+                    className={`border py-2 px-3  rounded-full bg-gray-100 text-sm ${
+                      item === size ? "border-orange-500 text-orange-500" : ""
+                    } flex items-center justify-center`}
+                    onClick={() => setSize(item)}
+                  >
+                    {item.value}
+                  </button>
+                ))
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-4">

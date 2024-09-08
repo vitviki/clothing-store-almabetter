@@ -11,16 +11,15 @@ import {
   Checkout,
   Category,
   SignUp,
-  Wishlist
+  Wishlist,
 } from "./pages";
 import { Footer, Navbar } from "./components";
 import { useEffect, useState } from "react";
 import { auth } from "./components/firebase";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
-  
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -44,7 +43,7 @@ export default function App() {
         <Route path="/:categoryId/:categoryType" element={<Category />} />
         <Route path="/products/:productId" element={<Product />} />
         <Route path="/profile/:profileId" element={<Profile />} />
-        <Route path="/search/:searchTerm" element={<SearchResults />} /> 
+        <Route path="/search/:searchTerm" element={<SearchResults />} />
       </Routes>
       <Footer />
       <ToastContainer />
