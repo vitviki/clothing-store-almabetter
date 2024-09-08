@@ -21,7 +21,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   const [user, setUser] = useState();
-
+//  to check the user is logged in and set the user 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user);
@@ -35,7 +35,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+        {/* If user is logged in it wont allows to go to login page */}
+        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} /> 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/wishlist" element={<Wishlist />} />
