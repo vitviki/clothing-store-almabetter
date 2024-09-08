@@ -12,11 +12,13 @@ import banner_9 from "./banner_9.jpg";
 import banner_10 from "./banner_10.jpeg";
 import banner_11 from "./banner_11.jpeg";
 import sale_banner_01 from "./sale_banner_01.jpg";
+import mobile_store from "./mobile_store.jpg";
 
 export const assets = {
   logo,
   discount_400,
   sale_banner_01,
+  mobile_store,
 };
 
 export const banner_ads = [

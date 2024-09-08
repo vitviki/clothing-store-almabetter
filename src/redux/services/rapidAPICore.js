@@ -7,15 +7,15 @@ export const rapidAPI = createApi({
     prepareHeaders: (headers) => {
       headers.set(
         "x-rapidapi-key",
-        "2c141ef8b4msha341a9c7ad828b4p199b68jsn400254ca1736"
+        "f9e9202ec7msh6871c11f2229f9dp1481f2jsnd3b8872e05f3"
       );
       return headers;
     },
   }),
   endpoints: (builder) => ({
     getBestSellers: builder.query({
-      query: (categoryId) =>
-        `/products-by-category?category_id=${categoryId}&page=1&country=IN&sort_by=REVIEWS&product_condition=ALL&is_prime=false`,
+      query: (category) =>
+        `/best-sellers?category=${category}&type=BEST_SELLERS&page=1&country=IN`,
     }),
     getData: builder.query({
       query: (queryString) =>

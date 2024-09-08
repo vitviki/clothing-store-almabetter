@@ -119,7 +119,7 @@ const Collections = ({ searchString, titleText1, titleText2 }) => {
           </select>
         </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 gap-y-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 2xl:grid-cols-4 gap-5 gap-y-8">
           {products?.map((product) => {
             return (
               <ProductCard
@@ -129,6 +129,8 @@ const Collections = ({ searchString, titleText1, titleText2 }) => {
                 price={product.product_price}
                 original_price={product.original_price}
                 image={product.product_photo}
+                rating={Math.ceil(Number(product.product_star_rating))}
+                rating_num={product.product_num_ratings}
               />
             );
           })}

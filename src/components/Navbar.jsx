@@ -79,7 +79,7 @@ const Navbar = () => {
 
   return (
     <header>
-      <nav className="w-full px-10 flex justify-between shadow-lg max-w-full  ">
+      <nav className="w-full px-10 flex justify-between shadow-lg max-w-full ">
         <div className="lg:w-[50%] flex lg:gap-10 items-center justify-start">
           <RxHamburgerMenu
             className="xl:hidden text-2xl cursor-pointer"
@@ -90,7 +90,7 @@ const Navbar = () => {
           <div
             className={`absolute inset-y-0 left-0 overflow-scroll h-[820px] bg-white transition-all ${
               sideMenuVisible ? "w-[50%]" : "w-0"
-            } shadow-lg flex flex-col`}
+            } shadow-lg flex flex-col z-10`}
           >
             <div className="mt-5">
               <div
@@ -198,7 +198,7 @@ const Navbar = () => {
               {navProfileIcons.map((item) => (
                 <li
                   key={item._id}
-                  className="h-full pt-4 cursor-pointer relative"
+                  className="h-full pt-4 cursor-pointer relative z-10"
                   onClick={() => handleDropdownClick(item._id)}
                 >
                   {item.dropdown && (

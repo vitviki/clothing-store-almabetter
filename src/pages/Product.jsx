@@ -72,6 +72,7 @@ const Product = () => {
   if (isFetching) {
     return <div className="text-3xl mt-10 text-center">Loading...</div>;
   }
+
   return (
     <div className="pt-10 transition-opacity ease-in duration-500 opacity-100 border-t-2 px-4 md:px-[5vw] lg:px-[7vw]">
       {/* PRODUCT DATA */}

@@ -1,10 +1,19 @@
 import { Link } from "react-router-dom";
+import { FaStar } from "react-icons/fa6";
 
-const ProductCard = ({ asin, title, price, original_price, image }) => {
+const ProductCard = ({
+  asin,
+  title,
+  price,
+  original_price,
+  image,
+  rating,
+  rating_num,
+}) => {
   return (
     <Link
       to={`/products/${asin}`}
-      className="shadow-lg w-[300px] h-[400px] flex flex-col justify-between"
+      className="shadow-lg lg:w-[300px] lg:h-[400px] w-[200px] h-[300px] flex flex-col justify-between"
     >
       <div className="overflow-hidden">
         <img
@@ -15,6 +24,21 @@ const ProductCard = ({ asin, title, price, original_price, image }) => {
       </div>
       <div className="flex flex-col justify-start p-3 gap-1 border-t-2">
         <h3 className="text-gray-900 truncate ...">{title}</h3>
+        <div className="flex items-center gap-1 mt-2">
+          {Array(5)
+            .fill(0)
+            .map((_, idx) => (
+              <FaStar
+                key={idx}
+                size={20}
+                className={`${
+                  rating > idx ? "text-orange-700" : "text-gray-300"
+                }`}
+                title={rating}
+              />
+            ))}
+          <p className="pl-2">({rating_num})</p>
+        </div>
         <p className="text-base text-gray-600">{price}</p>
       </div>
     </Link>
