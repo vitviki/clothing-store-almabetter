@@ -1,4 +1,5 @@
 const Title = ({ text1, text2, size }) => {
+  //Title reusable component to show in the top  
   return (
     <div className="inline-flex items-center gap-2 mb-3">
       <p className={`${size} text-slate-500 capitalize`}>
