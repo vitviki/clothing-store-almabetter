@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa6";
 
+// Reusable card Component for the products to show in card format
 const ProductCard = ({
   asin,
   title,
