@@ -11,17 +11,18 @@ const SignUp = () => {
   const [password,setPassword] =useState("");
 
   const navigate = useNavigate();
-  
+  //To handle login navigation
   const handleLoginNavigation = () => {
-    navigate("/");
+    navigate("/login");
   };
-
+   // handle submit used to submit the form
   const handleSubmit= async (e)=>{
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password)
       const user =auth.currentUser;
       navigate("/login")
+      //Toast messages to show notifications
       toast.success("Signup Successfull", {
         autoClose: 3000,
         hideProgressBar: true,
