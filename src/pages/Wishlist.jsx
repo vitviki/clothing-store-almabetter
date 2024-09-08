@@ -10,7 +10,7 @@ import { Title } from "../components";
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
-
+// useEffect hook to fetch data everytime its changed
   useEffect(() => {
     const fetchWishlist = async () => {
       if (auth.currentUser) {
@@ -36,6 +36,7 @@ const Wishlist = () => {
     fetchWishlist();
   }, []);
 
+  //Function to handle the remove button to remove from wishlist and from firestore
   const handleRemove = async (productId) => {
     if (auth.currentUser) {
       const userId = auth.currentUser.uid;
@@ -60,6 +61,7 @@ const Wishlist = () => {
     }
   };
 
+  // function to add the data to the cart 
   const addToBag = async () => {
     if (!size) {
       toast.error("Please select a size before adding to the cart.");
