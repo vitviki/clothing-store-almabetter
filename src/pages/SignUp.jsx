@@ -13,6 +13,11 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleSignUpNavigation = () => {
+    navigate("/login");
+  };
+
+  
+  const handleLoginNavigation = () => {
     navigate("/");
   };
 
@@ -89,6 +94,7 @@ const SignUp = () => {
           </a>
         </p>
         <button
+        onClick={handleSignUpNavigation}
           type="submit"
           className="py-2 text-white bg-[#ff3f6c] w-full"
         >
@@ -97,7 +103,7 @@ const SignUp = () => {
         <p className="py-3 w-full text-center max-sm:text-xs">
          Already have an account?{" "}
           <span
-            onClick={handleSignUpNavigation}
+            onClick={handleLoginNavigation}
             className="cursor-pointer font-bold text-[#ff3f6c]"
           >
             Login
