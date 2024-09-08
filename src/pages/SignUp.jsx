@@ -11,11 +11,6 @@ const SignUp = () => {
   const [password,setPassword] =useState("");
 
   const navigate = useNavigate();
-
-  const handleSignUpNavigation = () => {
-    navigate("/login");
-  };
-
   
   const handleLoginNavigation = () => {
     navigate("/");
@@ -26,6 +21,7 @@ const SignUp = () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password)
       const user =auth.currentUser;
+      navigate("/login")
       toast.success("Signup Successfull", {
         autoClose: 3000,
         hideProgressBar: true,
@@ -94,7 +90,6 @@ const SignUp = () => {
           </a>
         </p>
         <button
-        onClick={handleSignUpNavigation}
           type="submit"
           className="py-2 text-white bg-[#ff3f6c] w-full"
         >
