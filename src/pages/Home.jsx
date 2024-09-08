@@ -25,7 +25,7 @@ const Home = () => {
     <>
       <section className="flex items-center flex-col gap-5 border">
         <div className="w-full ">
-          <img src={assets.sale_banner_01} alt="sales banner" />
+          <img  src={assets.sale_banner_01} alt="sales banner" />
         </div>
         <Swiper
           direction={"horizontal"}
@@ -42,11 +42,11 @@ const Home = () => {
           }}
           speed={800}
           autoplay={{ delay: 1000, disableOnInteraction: true }}
-          className="w-full px-10 z-0"
+          className="w-full z-0"
         >
           {banner_ads.map((banner) => (
             <SwiperSlide key={banner._id} className="">
-              <img src={banner.banner} alt="banner" />
+              <img className="" src={banner.banner} alt="banner" />
             </SwiperSlide>
           ))}
         </Swiper>

@@ -5,7 +5,7 @@ import { social_links } from "../Utils/utils";
 const Footer = () => {
   return (
     <footer className="w-full bg-gray-50 pt-10 mt-10">
-      <div className="lg:w-[1000px] w-[500px] lg:m-auto mx-20">
+      <div className=" w-[50%] lg:m-auto mx-20">
         <div className="grid sm:grid-cols-2 md:grid-cols-3 sm:gap-0 gap-5 mb-5">
           {footerLinks.map((link) => (
             <div key={link._id} className="flex flex-col gap-7">
