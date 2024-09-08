@@ -3,10 +3,11 @@ import { auth, db } from "../components/firebase";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { CiCircleRemove } from "react-icons/ci";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-
+  const navigate=useNavigate()
   useEffect(() => {
     const fetchCartItems = async () => {
       if (auth.currentUser) {
@@ -43,8 +44,9 @@ const Cart = () => {
       }
     }
   };
-  console.log(cartItems);
-  
+  const handleNavigate = ()=>{
+    navigate("/wishlist")
+  }  
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 md:px-8 lg:px-16">
@@ -52,7 +54,7 @@ const Cart = () => {
         <div className=" text-center">
           <h1 className="text-lg font-bold mt-[30px] md:mt-[200px]">Hey, It's feels so light</h1>
           <p className="text-[#9498b8] text-lg mt-4">There is nothing in your bag. Let's add some items.</p>
-          <button className=" mt-8 p-3 text-lg px-12 rounded-md border border-[#ff3f6c] text-[#ff3f6c] font-bold">Add Items From Wishlist</button>
+          <button  onClick={handleNavigate} className=" mt-8 p-3 text-lg px-12 rounded-md border border-[#ff3f6c] text-[#ff3f6c] font-bold">Add Items From Wishlist</button>
         </div>
       ) : (
         <div className="max-w-screen-lg mx-auto">
