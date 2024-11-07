@@ -180,18 +180,26 @@ export const navProfileIcons = [
       {
         _id: 1,
         category: "Orders",
+        navigate: "/",
+        needsLogin: true,
       },
       {
         _id: 2,
         category: "Wishlist",
+        navigate: "/wishlist",
+        needsLogin: true,
       },
       {
         _id: 3,
         category: "Giftcards",
+        navigate: "/",
+        needsLogin: false,
       },
       {
         _id: 4,
         category: "Contact Us",
+        navigate: "/",
+        needsLogin: false,
       },
     ],
   },
@@ -199,13 +207,15 @@ export const navProfileIcons = [
     _id: 2,
     icon: FaRegHeart,
     title: "Wishlist",
-    navigate:"/wishlist"
+    navigate: "/wishlist",
+    needsLogin: true,
   },
   {
     _id: 3,
     icon: IoBagOutline,
     title: "Bag",
-    navigate:"/cart"
+    navigate: "/cart",
+    needsLogin: true,
   },
 ];
 

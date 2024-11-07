@@ -22,22 +22,20 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openDropdown2, setOpenDropdown2] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
-// function that gets data from firestore 
+
+  // function that gets data from firestore
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         // Check if user exists
-        // console.log(user);
         const docRef = doc(db, "Users", user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setUserDetails(docSnap.data());
-          // console.log(docSnap.data());
         } else {
           console.log("No such document!");
         }
       } else {
-        // console.log("User is not logged in");
         setUserDetails(null);
       }
     });
@@ -48,20 +46,36 @@ const Navbar = () => {
 
   const handleItemClick = (item) => {
     if (item.navigate) {
+      // Check if this particular item needs user to be logged in. If yes, then ask for login(incase user is not logged in)
+      if (item.needsLogin) {
+        if (!userDetails) {
+          toast.error("Please login", {
+            autoClose: 500,
+            hideProgressBar: true,
+            progress: undefined,
+            position: "bottom-right",
+            className: "font-semibold",
+          });
+          return;
+        }
+      }
       navigate(item.navigate); // Navigate to the specified route
     } else if (item.dropdown) {
       handleDropdownClick(item._id); // Handle dropdown logic
     }
   };
-// function to handle dropdown
+
+  // function to handle dropdown
   const handleDropdownClick2 = (id) => {
     setOpenDropdown2(openDropdown2 === id ? null : id); // Toggle dropdown
   };
-// function to handle login
+
+  // function to handle login
   const handleLoginButton = () => {
     navigate("/login");
   };
-// function to remove the userID and to get logout and navigates to login 
+
+  // function to remove the userID and to get logout and navigates to login
   async function handleLogout() {
     try {
       await auth.signOut();
@@ -86,7 +100,6 @@ const Navbar = () => {
   // Search functionality
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(searchValue.length);
     if (searchValue.length >= 3) {
       console.log(searchValue);
       setSearchValue("");
@@ -94,7 +107,7 @@ const Navbar = () => {
       navigate(`/search/${searchValue}`);
     }
   };
-// hook which is used to fetch data everytime
+  // hook which is used to fetch data everytime
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -264,7 +277,9 @@ const Navbar = () => {
                             key={index}
                             className="cursor-pointer p-2 rounded-md"
                           >
-                            {option.category}
+                            <div onClick={() => handleItemClick(option)}>
+                              {option.category}
+                            </div>
                           </li>
                         ))}
                       </ul>
