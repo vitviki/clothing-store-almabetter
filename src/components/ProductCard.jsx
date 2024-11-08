@@ -13,6 +13,7 @@ const ProductCard = ({
 }) => {
   return (
     <Link
+      reloadDocument
       to={`/products/${asin}`}
       className="shadow-lg lg:w-[300px] lg:h-[400px] w-[200px] h-[300px] flex flex-col justify-between"
     >

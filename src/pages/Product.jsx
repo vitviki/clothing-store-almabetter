@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   useGetDataQuery,
@@ -7,9 +7,11 @@ import {
 import { FaStar } from "react-icons/fa6";
 import { FaCartPlus } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
+import { IoMdHeart } from "react-icons/io";
+import { MdOutlineArrowRightAlt } from "react-icons/md";
 import { ProductCard, Title } from "../components";
 import { auth, db } from "../components/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
 // Component to display related products
@@ -46,10 +48,13 @@ const RelatedProducts = ({ name }) => {
 };
 
 const Product = () => {
+  const navigate = useNavigate();
   const { productId } = useParams();
   const [mainImage, setMainImage] = useState("");
   const [stars, setStars] = useState(0);
   const [size, setSize] = useState("");
+  const [inWishList, setInWishList] = useState(false);
+  const [inCart, setInCart] = useState(false);
 
   // Fetch product details
   const { data: productData, isFetching } =
@@ -66,13 +71,62 @@ const Product = () => {
     if (productData?.data) {
       setMainImage(productData.data.product_photos[0]);
       setStars(Math.ceil(Number(productData.data.product_star_rating)));
+      if (auth.currentUser) {
+        const userId = auth.currentUser.uid;
+        const wishlistRef = doc(
+          db,
+          "Users",
+          userId,
+          "wishlist",
+          productData.data.asin
+        );
+        const cartRef = doc(db, "Users", userId, "cart", productData.data.asin);
+
+        // Fetch the wishlist to see if this product already is there.
+        fetchWishListItemsAndCheckIfProductExists(wishlistRef);
+
+        // Fetch the cart to see if this product already is in there.
+        fetchCartItemsAndCheckIfProductExists(cartRef);
+      }
     }
   }, [productData]);
 
+  async function fetchWishListItemsAndCheckIfProductExists(wishlistRef) {
+    try {
+      const snap = await getDoc(wishlistRef);
+      if (snap.exists()) {
+        setInWishList(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function fetchCartItemsAndCheckIfProductExists(cartRef) {
+    try {
+      const snap = await getDoc(cartRef);
+      if (snap.exists()) {
+        setInCart(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // Function to add product to cart
-  const addToBag = async () => {
+  const goAddToBag = async () => {
+    if (inCart) {
+      navigate("/cart");
+      return;
+    }
+
     if (!size) {
-      toast.error("Please select a size before adding to the cart.");
+      toast.error("Please select a size.", {
+        autoClose: 1000,
+        hideProgressBar: true,
+        position: "bottom-right",
+        className: "bg-red-600 text-white font-semibold",
+      });
       return;
     }
 
@@ -85,25 +139,33 @@ const Product = () => {
           ...productData.data,
           selectedSize: size,
         });
+        setInCart(true);
         toast.success("Added To Bag", {
-          autoClose: 3000,
+          autoClose: 1000,
           hideProgressBar: true,
+          position: "bottom-right",
           className: "bg-green-600 text-white font-semibold",
         });
       } catch (error) {
         toast.error(error.message, {
-          autoClose: 3000,
+          autoClose: 1000,
           hideProgressBar: true,
+          position: "bottom-right",
           className: "bg-red-600 text-white font-semibold",
         });
       }
     } else {
-      toast.error("You need to be logged in to add items to the cart.");
+      toast.error("You need to be logged in to add items to the cart.", {
+        autoClose: 1000,
+        hideProgressBar: true,
+        position: "bottom-right",
+        className: "bg-red-600 text-white font-semibold",
+      });
     }
   };
 
   // Function to add product to wishlist
-  const addToWishlist = async () => {
+  const addRemoveToWishlist = async () => {
     if (auth.currentUser) {
       const userId = auth.currentUser.uid;
       const wishlistRef = doc(
@@ -114,17 +176,33 @@ const Product = () => {
         productData.data.asin
       );
 
+      // Check to see if the product is already in the wishlist.
+      // If it is, then remove it, otherwise add it to the wishlist.
       try {
-        await setDoc(wishlistRef, productData.data);
-        toast.success("Added To Wishlist", {
-          autoClose: 3000,
-          hideProgressBar: true,
-          className: "bg-green-600 text-white font-semibold",
-        });
+        if (inWishList) {
+          await deleteDoc(wishlistRef);
+          setInWishList(false);
+          toast.success("Removed from Wishlist", {
+            autoClose: 1000,
+            hideProgressBar: true,
+            position: "bottom-right",
+            className: "bg-green-600 text-white font-semibold",
+          });
+        } else {
+          await setDoc(wishlistRef, productData.data);
+          setInWishList(true);
+          toast.success("Added To Wishlist", {
+            autoClose: 1000,
+            hideProgressBar: true,
+            position: "bottom-right",
+            className: "bg-green-600 text-white font-semibold",
+          });
+        }
       } catch (error) {
         toast.error(error.message, {
-          autoClose: 3000,
+          autoClose: 1000,
           hideProgressBar: true,
+          position: "bottom-right",
           className: "bg-red-600 text-white font-semibold",
         });
       }
@@ -132,8 +210,6 @@ const Product = () => {
       toast.error("You need to be logged in to add items to the wishlist.");
     }
   };
-
-  console.log(productData);
 
   if (isFetching) {
     return <div className="text-3xl mt-10 text-center">Loading...</div>;
@@ -231,18 +307,36 @@ const Product = () => {
           </div>
           <div className="flex items-center gap-4">
             <button
-              onClick={addToBag}
+              onClick={goAddToBag}
               className="bg-pink-600 text-white px-8 py-3 text-sm font-semibold active:bg-gray-700 flex items-center gap-2 rounded-md"
             >
-              <FaCartPlus size={20} className="text-white" />
-              ADD TO BAG
+              {inCart ? (
+                <>
+                  <MdOutlineArrowRightAlt size={20} className="text-white" />
+                  GO TO BAG
+                </>
+              ) : (
+                <>
+                  <FaCartPlus size={20} className="text-white" />
+                  ADD TO BAG
+                </>
+              )}
             </button>
             <button
-              onClick={addToWishlist}
+              onClick={addRemoveToWishlist}
               className="flex items-center gap-2 rounded-md px-8 hover:border-black py-3 text-sm font-semibold bg-white text-black border"
             >
-              <CiHeart size={20} className="text-black" />
-              WISHLIST
+              {inWishList ? (
+                <>
+                  <IoMdHeart size={20} className="text-black" />
+                  WISHLISTED
+                </>
+              ) : (
+                <>
+                  <CiHeart size={20} className="text-black" />
+                  WISHLIST
+                </>
+              )}
             </button>
           </div>
           <hr className="mt-8 sm:w-4/5" />
