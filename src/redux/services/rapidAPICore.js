@@ -5,10 +5,7 @@ export const rapidAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://real-time-amazon-data.p.rapidapi.com",
     prepareHeaders: (headers) => {
-      headers.set(
-        "x-rapidapi-key",
-        "e8af08ed0emshe8e79e70232b44dp1f74bdjsn624a2984c7fc"
-      );
+      headers.set("x-rapidapi-key", import.meta.env.VITE_AMAZON_API_KEY);
       return headers;
     },
   }),
